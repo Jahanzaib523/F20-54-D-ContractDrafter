@@ -1,0 +1,215 @@
+<html>
+    <head>
+        <title>Room</title>
+        <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <style>
+            *body
+            {
+                margin-bottom: 0;
+                height: 100%;
+                width: 100%;
+            }
+
+            nav ul
+            {
+                float: right;
+                margin-right: 20px;
+            }
+
+            nav ul li
+            {
+                display: inline-block;
+                line-height: 80px;
+                margin: 0 5px;
+            }
+
+            nav ul li a
+            {
+                color: white;
+             
+            }
+
+            .bnav
+            {
+              position: fixed;
+              bottom: 0;
+              left: 0;
+              height: 10%;
+              width: 100%;
+              font-family: sans-serif;
+              font-size: 13px;
+              color: #333333;
+              background: #434343;
+              box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+            }
+
+            .bnav__item
+            {
+               position: relative;
+               padding: 10px;
+               justify-content: center;
+               align-items: center;
+               display: flex;
+            }
+
+             #container
+             {
+                margin: 0%;
+                width: 100%;
+                height: 100%;
+             }
+
+            #video
+            {
+                margin: 0%;
+                width: 100%;
+                height: 100%;
+            }
+  
+            .fa-video-camera
+            {
+               font-size: 20px;
+            }
+
+            .fa-ban
+            {
+                font-size: 20px;
+            }
+
+            .fa-stop
+            {
+               font-size: 20px;
+            }
+
+            .fa-microphone-slash
+            {
+               font-size: 20px;
+            }
+
+            .fa-microphone
+            {
+               font-size: 20px;
+            }
+
+             li button:hover
+            {
+               background-color: #395697;
+               color: white;
+            }
+             
+             *
+             {
+                 padding: 0;
+                 margin: 0%;
+                 text-decoration: none;
+                 list-style: none;
+                 box-sizing: border-box;
+             }
+
+             #heading
+             {
+                 align-content: center;
+                 text-align: center;
+                 text-justify: auto;
+                 font-size: large;
+             }
+        </style>
+    </head>
+    <body id="container">
+    
+        <video autoplay id="video"></video>
+        <h1 id="heading"></h1>
+
+        <nav class="bnav">
+             <div class="bnav__item">
+                <ul>
+                    <li> <button type="button" id="micbtn" onclick="turnOnMic()" style="height: 55px; width: 55px; border: none; border-radius: 50%; border: none; outline: none;" class="fas fa-microphone"></button> </li>
+                    <li> <button type="button" id="videobtn" onclick="turnOnVideo()" style="height: 55px; width: 55px; border: none; border-radius: 50%; border: none; outline: none;" class="fa fa-video-camera"></button></li>
+                    <li> <button onclick="location.href='/';" style="height: 55px; width: 55px; border: none; border-radius: 50%; border: none; outline: none;" class="fas fa-stop"></button> </li>
+                 </ul>
+             </div>
+        </nav>
+        <script type="text/javascript">
+            const constraints=
+            {
+                audio: false,
+                video: {
+                    width: 1500, height: 740
+                }
+            };
+
+            async function init()
+            {
+                try
+                {
+                    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    handleSuccess(stream)
+                }
+                catch (e)
+                { 
+                    errorMsgElement.innerHTML ='navigator.getUserMedia.error:${e.toString()}';
+                }
+            }
+
+            function handleSuccess(stream)
+            {
+                window.stream = stream;
+                video.srcObject=stream;
+            }
+
+            init();
+
+            var context = canvas.getContext('2d')
+            function turnOnVideo()
+            {
+                var icon = document.getElementById("videobtn")
+
+                if (icon.classList.contains('fa-video-camera')) 
+                {
+                  
+                    var value = document.getElementById('video');
+                    value.autoplay = false;
+                    value.load();
+                    document.getElementById('video').style.display = "none"
+                    document.getElementById('heading').innerHTML = "Video Turned Off"
+                    icon.classList.remove('fa-video-camera');
+                    icon.classList.add('fa-ban');
+                } 
+                else 
+                {
+                    var value = document.getElementById('video');
+                    value.autoplay = true;
+                    value.load();
+                    document.getElementById('video').style.display = "block"
+                    document.getElementById('heading').innerHTML = ""
+                    icon.classList.remove('fa-ban');
+                    icon.classList.add('fa-video-camera');
+                }
+            }
+
+            function turnOnMic()
+            {
+                var icon = document.getElementById("micbtn")
+
+                if (icon.classList.contains('fa-microphone')) 
+                {
+                  
+                    var value = document.getElementById('video');
+                    //value.autoplay = false;
+                    //value.load();
+                    icon.classList.remove('fa-microphone');
+                    icon.classList.add('fa-microphone-slash');
+                } 
+                else 
+                {
+                    var value = document.getElementById('video');
+                    //value.autoplay = true;
+                    //value.load();
+                    icon.classList.remove('fa-microphone-slash');
+                    icon.classList.add('fa-microphone');
+                }
+            }
+        </script>
+    </body>
+</html>
